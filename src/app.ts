@@ -19,9 +19,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // router imports
 import healthCheckRouter from "./routes/healthcheck.routes"
+import chatRouter from "./routes/chat.routes"
 
 // url mapping
 app.use("/healthcheck", healthCheckRouter)
+app.use("/api/v1/chat", chatRouter)
 
 
 // global error handler
