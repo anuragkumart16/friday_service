@@ -9,6 +9,8 @@ const microserviceName = appConfig.microserviceName
  * 
  * Starts the Express application on the configured port.
  */
-app.listen(port, () => {
-    console.log(`${microserviceName} is up and running on http://localhost:${port}`);
-});
+if (!process.env.VERCEL) {
+    app.listen(port, () => {
+        console.log(`${microserviceName} is up and running on http://localhost:${port}`);
+    });
+}
