@@ -17,3 +17,8 @@ export const appConfig = {
     serverUrl: process.env.RENDER_EXTERNAL_URL || process.env.SERVER_URL || `http://localhost:${process.env.PORT || 5001}`
 }
 
+export const groqConfig = {
+    GROQ_API_KEY: process.env.GROQ_API_KEY || (() => {
+        throw new Error("Environment variable GROQ_API_KEY is not defined.");
+    })()
+}
