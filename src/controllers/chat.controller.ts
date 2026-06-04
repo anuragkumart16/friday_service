@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { graph } from "../graphs/main.graph";
+import { quickAgent } from "../agents/quickAgent/graph";
 
 export async function chatController(
     req: Request,
@@ -8,7 +8,7 @@ export async function chatController(
 ) {
     const { message } = req.body;
 
-    const result = await graph.invoke({
+    const result = await quickAgent.invoke({
         messages: [
             {
                 role: "user",
