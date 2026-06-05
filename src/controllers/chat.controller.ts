@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../db/prismaClient";
 import { quickAgent } from "../agents/quickAgent/graph";
+import { SystemMessage } from "@langchain/core/messages";
 
 export async function chatController(
     req: Request,
@@ -9,7 +10,6 @@ export async function chatController(
     const { message, conversationId } = req.body;
 
     let conversation
-
     if (!conversationId) {
         conversation = await prisma.conversation.create({
             data: {
@@ -23,7 +23,8 @@ export async function chatController(
                 }
             },
             include: {
-                messages: true
+                messages: true,
+                memories: true
             }
         })
     } else {
@@ -45,26 +46,91 @@ export async function chatController(
                     orderBy: {
                         createdAt: "asc"
                     }
-                }
+                },
+                memories: true
             }
         });
     }
 
     if (!conversation) throw new Error("Error finding conversation!")
 
-    const history = conversation.messages.map((msg) => ({
-        role: msg.role.toLowerCase(),
-        content: msg.content,
-    }));
+    const history = conversation.messages
+        .filter(msg => msg.content.trim() !== "")
+        .map((msg) => ({
+            role: msg.role.toLowerCase(),
+            content: msg.content,
+        }));
 
+    const userMemory = await prisma.personalMemories.findMany();
+    const userMemoryStrings = userMemory.map((memory) => memory.content);
+
+
+    const systemPrompt = `You are Friday, Anurag's personal AI assistant.
+
+Conversation ID:
+${conversation.id}
+
+PERSONAL MEMORIES:
+${userMemoryStrings.join("\n")}
+
+CONVERSATION MEMORIES:
+${conversation.memories.map(m => m.content).join("\n")}
+
+You have access to memory tools.
+
+MEMORY CLASSIFICATION RULES
+
+Use save_personal_memory when the information is about Anurag and should be remembered across all future conversations.
+
+Examples:
+
+* User's name is Anurag.
+* User prefers to be called Boss.
+* User wants to become a tech founder.
+* User is building Friday.
+* User prefers React Native.
+* User uses a MacBook M3.
+
+Use save_conversation_memory when the information is specific to the current conversation, project, or discussion and may be useful later in this conversation.
+
+Examples:
+
+* Friday uses MongoDB for memory storage.
+* Email agent uses Resend.
+* Project will use LangGraph.
+* Memory architecture contains PersonalMemories and ConversationMemories.
+
+Do NOT save:
+
+* Greetings.
+* Small talk.
+* Questions by themselves.
+* Temporary discussion points.
+* Information with little future value.
+
+Bad memories:
+
+* User said hello.
+* User asked about their name.
+* Introduction.
+* User asked what tools are available.
+
+When information clearly qualifies as a memory, save it immediately using the appropriate tool. Do not ask for confirmation before saving.
+
+Be concise in your responses unless the user asks for more detail. User prefers short messages.
+`;
 
     const result = await quickAgent.invoke({
         messages: [
+            new SystemMessage(systemPrompt),
             ...history
         ],
     });
 
-    const lastMessage = result.messages[result.messages.length - 1];
+    const lastMessage = [...result.messages]
+        .reverse()
+        .find(m => m._getType() === "ai" && typeof m.content === "string" && m.content.trim() !== "")
+        ?? result.messages[result.messages.length - 1];
 
     await prisma.conversation.update({
         where: {
