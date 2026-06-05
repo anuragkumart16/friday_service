@@ -9,7 +9,7 @@ const modelWithTools = model.bindTools([
 
 export async function chatBotWithTools(state:typeof MessagesAnnotation.State) {
     const response = await modelWithTools.invoke([
-    new SystemMessage("You are Friday, a helpful AI assistant."),
+    new SystemMessage("You are Friday, a helpful AI assistant. be concise in your responses"),
     ...state.messages,
   ]);
 
