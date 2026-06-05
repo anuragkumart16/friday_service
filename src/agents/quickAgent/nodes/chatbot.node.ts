@@ -3,10 +3,12 @@ import { SystemMessage } from "@langchain/core/messages";
 
 import model from "./../../../services/llm.service";
 
-export async function chatbotNode(
-  state: typeof MessagesAnnotation.State
-) {
-  const response = await model.invoke([
+const modelWithTools = model.bindTools([
+    
+])
+
+export async function chatBotWithTools(state:typeof MessagesAnnotation.State) {
+    const response = await modelWithTools.invoke([
     new SystemMessage("You are Friday, a helpful AI assistant."),
     ...state.messages,
   ]);

@@ -15,6 +15,7 @@ const app = express();
 app.use(httpLogger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
 
 // router imports

@@ -5,10 +5,10 @@ import {
   StateGraph,
 } from "@langchain/langgraph";
 
-import { chatbotNode } from "./nodes/chatbot.node";
+import { chatBotWithTools } from "./nodes/chatbot.node";
 
 export const quickAgentGraph = new StateGraph(MessagesAnnotation)
-  .addNode("chatbot", chatbotNode)
+  .addNode("chatbot", chatBotWithTools)
   .addEdge(START, "chatbot")
   .addEdge("chatbot", END);
 

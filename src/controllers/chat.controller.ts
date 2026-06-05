@@ -1,15 +1,54 @@
 import { Request, Response } from "express";
-
+import prisma from "../db/prismaClient";
 import { quickAgent } from "../agents/quickAgent/graph";
 
 export async function chatController(
     req: Request,
     res: Response
 ) {
-    const { message } = req.body;
+    const { message, conversationId } = req.body;
+
+    let conversation
+
+    if (!conversationId) {
+        conversation = await prisma.conversation.create({
+            data: {
+                messages: {
+                    create: {
+                        role: "USER",
+                        content: message,
+                    }
+                }
+            },
+            include: {
+                messages: true
+            }
+        })
+    } else {
+        conversation = await prisma.conversation.findUnique({
+            where: {
+                id: conversationId
+            },
+            include: {
+                messages: {
+                    orderBy: {
+                        createdAt: "asc"
+                    }
+                }
+            }
+        })
+    }
+
+    if (!conversation) throw new Error("Error finding conversation!")
+
+    const history = conversation.messages.map((msg) => ({
+        role: msg.role.toLowerCase(),
+        content: msg.content,
+    }));
 
     const result = await quickAgent.invoke({
         messages: [
+            ...history,
             {
                 role: "user",
                 content: message,
@@ -19,7 +58,22 @@ export async function chatController(
 
     const lastMessage = result.messages[result.messages.length - 1];
 
+    await prisma.conversation.update({
+        where: {
+            id: conversation.id
+        },
+        data: {
+            messages: {
+                create: {
+                    role: "ASSISTANT",
+                    content: lastMessage.content as string
+                }
+            }
+        }
+    })
+
     res.json({
-        response: lastMessage?.content ?? "",
+        conversationId: conversation.id,
+        response: lastMessage?.content,
     });
 }
