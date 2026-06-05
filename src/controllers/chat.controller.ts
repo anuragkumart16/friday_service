@@ -25,9 +25,17 @@ export async function chatController(
             }
         })
     } else {
-        conversation = await prisma.conversation.findUnique({
+        conversation = await prisma.conversation.update({
             where: {
                 id: conversationId
+            },
+            data: {
+                messages: {
+                    create: {
+                        role: "USER",
+                        content: message
+                    }
+                }
             },
             include: {
                 messages: {
@@ -36,7 +44,7 @@ export async function chatController(
                     }
                 }
             }
-        })
+        });
     }
 
     if (!conversation) throw new Error("Error finding conversation!")
@@ -46,13 +54,10 @@ export async function chatController(
         content: msg.content,
     }));
 
+
     const result = await quickAgent.invoke({
         messages: [
-            ...history,
-            {
-                role: "user",
-                content: message,
-            },
+            ...history
         ],
     });
 
