@@ -21,10 +21,12 @@ app.use(express.static("public"));
 // router imports
 import healthCheckRouter from "./routes/healthcheck.routes"
 import chatRouter from "./routes/chat.routes"
+import conversationRouter from "./routes/conversation.route"
 
 // url mapping
 app.use("/healthcheck", healthCheckRouter)
 app.use("/api/v1/chat", chatRouter)
+app.use("/api/v1/conversations", conversationRouter)
 
 
 // global error handler

@@ -13,6 +13,8 @@ export async function chatController(
     if (!conversationId) {
         conversation = await prisma.conversation.create({
             data: {
+                title: message,
+                lastMessageAt: new Date(),
                 messages: {
                     create: {
                         role: "USER",
@@ -30,6 +32,7 @@ export async function chatController(
                 id: conversationId
             },
             data: {
+                lastMessageAt: new Date(),
                 messages: {
                     create: {
                         role: "USER",
@@ -68,6 +71,7 @@ export async function chatController(
             id: conversation.id
         },
         data: {
+            lastMessageAt: new Date(),
             messages: {
                 create: {
                     role: "ASSISTANT",
