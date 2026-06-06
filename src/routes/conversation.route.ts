@@ -5,7 +5,11 @@ import {
     loadMessages
 } from "./../controllers/conversation.controller"
 
-//TODO : write comments explaining what this router does
+/**
+ * Conversation Router
+ * GET /               — paginated list of all conversations
+ * GET /:conversationId — messages for a specific conversation
+ */
 const conversationRouter = Router()
 
 conversationRouter.route("/").get(getAllCoversations)

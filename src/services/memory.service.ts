@@ -1,6 +1,6 @@
 import prisma from "../db/prismaClient"
 
-// TODO : write comments for this method
+/** Persists a personal memory entry (cross-conversation) and returns its id */
 export async function savePersonalMemories({content}: {content : string}){
     const personalMemory = await prisma.personalMemories.create({
         data : {
@@ -11,7 +11,7 @@ export async function savePersonalMemories({content}: {content : string}){
     return `Personal Memory is saved successfully with id ${personalMemory.id}`
 }
 
-// TODO : write comments for this method
+/** Persists a memory scoped to a specific conversation and returns its id */
 export async function saveConversationMemory({ conversationId, content } : {conversationId : string , content : string}) : Promise<string> {
     const memory = await prisma.conversationMemories.create({
       data: {

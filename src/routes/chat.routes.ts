@@ -2,7 +2,11 @@ import { Router } from "express";
 
 import { chatController } from "../controllers/chat.controller";
 
-// TODO : write comments explaining what this router does
+/**
+ * Chat Router
+ * POST / — accepts { message, conversationId? }
+ * Runs quickAgent and returns { conversationId, response }
+ */
 const router = Router();
 
 router.post("/", chatController);
