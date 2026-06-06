@@ -1,8 +1,6 @@
 import prisma from "../db/prismaClient"
 
 export async function savePersonalMemories({content}: {content : string}){
-    console.log("SAVE PERSONAL MEMORY CALLED");
-    console.log(content);
     const personalMemory = await prisma.personalMemories.create({
         data : {
             content : content

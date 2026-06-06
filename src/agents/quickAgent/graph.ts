@@ -13,10 +13,10 @@ export const quickAgentGraph = new StateGraph(MessagesAnnotation)
   .addNode("chatbot", chatBotWithTools)
   .addNode("tools", toolNode)
   .addEdge(START, "chatbot")
-    .addConditionalEdges(
+  .addConditionalEdges(
     "chatbot",
     toolsCondition
   )
-  .addEdge("tools", "chatbot");
+  .addEdge("tools", "chatbot")
 
 export const quickAgent = quickAgentGraph.compile();
