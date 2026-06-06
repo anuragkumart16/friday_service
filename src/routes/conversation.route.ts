@@ -5,6 +5,7 @@ import {
     loadMessages
 } from "./../controllers/conversation.controller"
 
+//TODO : write comments explaining what this router does
 const conversationRouter = Router()
 
 conversationRouter.route("/").get(getAllCoversations)

@@ -10,6 +10,7 @@
  * @property nodeEnv - The current Node.js environment (e.g., 'development', 'production'). Defaults to 'dev'.
  * @property microserviceName - The name of the microservice. Derived from env var or defaults to 'server'.
  */
+// TODO : throw errors for absence of envs
 export const appConfig = {
     port: process.env.PORT || 5001,
     nodeEnv: process.env.NODE_ENV || "dev",
@@ -17,6 +18,8 @@ export const appConfig = {
     serverUrl: process.env.RENDER_EXTERNAL_URL || process.env.SERVER_URL || `http://localhost:${process.env.PORT || 5001}`
 }
 
+
+// TODO : write comments for this export
 export const groqConfig = {
     GROQ_API_KEY: process.env.GROQ_API_KEY || (() => {
         throw new Error("Environment variable GROQ_API_KEY is not defined.");

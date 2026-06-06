@@ -10,11 +10,9 @@ const microserviceName = appConfig.microserviceName
  * 
  * Starts the Express application on the configured port.
  */
-if (!process.env.VERCEL) {
-    app.listen(port, () => {
-        console.log(`${microserviceName} is up and running on http://localhost:${port}`);
-        
-        // Use external URL if available (e.g., Render), otherwise fallback to localhost
-        startSelfPing(`${appConfig.serverUrl}/healthcheck`);
-    });
-}
+app.listen(port, () => {
+    console.log(`${microserviceName} is up and running on http://localhost:${port}`);
+
+    // Use external URL if available (e.g., Render), otherwise fallback to localhost
+    startSelfPing(`${appConfig.serverUrl}/healthcheck`);
+});

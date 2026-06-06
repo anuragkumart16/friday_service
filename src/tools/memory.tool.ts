@@ -11,7 +11,7 @@ interface ToolDef{
     schema : z.ZodType<any>
 }
 
-
+// TODO : move this description to definition folder
 const savePersonalMemoryToolDef : ToolDef = {
     name: "save_personal_memory",
     description:
@@ -22,7 +22,7 @@ const savePersonalMemoryToolDef : ToolDef = {
 }
 export const savePersonalMemoryTool = tool(savePersonalMemories,savePersonalMemoryToolDef)
 
-
+// TODO : move this description definition folder
 const saveConversationMemoryToolDef : ToolDef = {
     name: "save_conversation_memory",
     description:
