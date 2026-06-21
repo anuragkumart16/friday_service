@@ -64,8 +64,28 @@ export async function chatController(
     const userMemory = await prisma.personalMemories.findMany();
     const userMemoryStrings = userMemory.map((memory) => `- [ID: ${memory.id}] ${memory.content}`);
 
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'Asia/Kolkata'
+    });
+    const formattedTime = currentDate.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: true,
+        timeZone: 'Asia/Kolkata'
+    });
 
     const systemPrompt = `You are Friday, Anurag's personal AI assistant.
+
+Current Date and Day (IST):
+${formattedDate}
+Current Time (IST):
+${formattedTime}
 
 Conversation ID:
 ${conversation.id}
