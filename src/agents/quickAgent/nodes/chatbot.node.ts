@@ -2,12 +2,14 @@ import { MessagesAnnotation } from "@langchain/langgraph";
 
 import model from "./../../../services/llm.service";
 import { savePersonalMemoryTool,saveConversationMemoryTool, deletePersonalMemoryTool, deleteConversationMemoryTool } from "../../../tools/memory.tool";
+import { runEmailAgentTool } from "../../../tools/emailAgent.tool";
 
 const modelWithTools = model.bindTools([
     savePersonalMemoryTool,
     saveConversationMemoryTool,
     deletePersonalMemoryTool,
-    deleteConversationMemoryTool
+    deleteConversationMemoryTool,
+    runEmailAgentTool
 ])
 
 export async function chatBotWithTools(state:typeof MessagesAnnotation.State) {
