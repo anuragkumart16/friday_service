@@ -19,3 +19,21 @@ export const saveConversationMemoryToolDef : ToolDef = {
       content: z.string(),
     })
 }
+
+export const deletePersonalMemoryToolDef : ToolDef = {
+    name: "delete_personal_memory",
+    description:
+      "Delete a personal memory by its ID.",
+    schema: z.object({
+      id: z.string(),
+    }),
+}
+
+export const deleteConversationMemoryToolDef : ToolDef = {
+    name: "delete_conversation_memory",
+    description:
+      "Delete a conversation memory by its ID.",
+    schema: z.object({
+      id: z.string(),
+    }),
+}

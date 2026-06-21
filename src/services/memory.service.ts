@@ -22,3 +22,21 @@ export async function saveConversationMemory({ conversationId, content } : {conv
 
     return `Conversation Memory is saved successfully with id ${memory.id}`;
 }
+
+/** Deletes a personal memory entry by its id */
+export async function deletePersonalMemory({ id }: { id: string }): Promise<string> {
+    await prisma.personalMemories.delete({
+        where: { id }
+    });
+
+    return `Personal Memory with id ${id} has been deleted successfully.`;
+}
+
+/** Deletes a conversation memory entry by its id */
+export async function deleteConversationMemory({ id }: { id: string }): Promise<string> {
+    await prisma.conversationMemories.delete({
+        where: { id }
+    });
+
+    return `Conversation Memory with id ${id} has been deleted successfully.`;
+}

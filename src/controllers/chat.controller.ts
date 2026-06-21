@@ -62,7 +62,7 @@ export async function chatController(
         }));
 
     const userMemory = await prisma.personalMemories.findMany();
-    const userMemoryStrings = userMemory.map((memory) => memory.content);
+    const userMemoryStrings = userMemory.map((memory) => `- [ID: ${memory.id}] ${memory.content}`);
 
 
     const systemPrompt = `You are Friday, Anurag's personal AI assistant.
@@ -74,9 +74,13 @@ PERSONAL MEMORIES:
 ${userMemoryStrings.join("\n")}
 
 CONVERSATION MEMORIES:
-${conversation.memories.map(m => m.content).join("\n")}
+${conversation.memories.map(m => `- [ID: ${m.id}] ${m.content}`).join("\n")}
 
 You have access to memory tools.
+
+Use delete_personal_memory to delete cross-conversation personal memories when the user asks to forget, delete, or correct a personal memory. Use the specific ID listed in the PERSONAL MEMORIES list (e.g. delete_personal_memory({ id: "..." })).
+
+Use delete_conversation_memory to delete memories scoped to the current conversation when the user asks to forget, delete, or correct a conversation memory. Use the specific ID listed in the CONVERSATION MEMORIES list (e.g. delete_conversation_memory({ id: "..." })).
 
 MEMORY CLASSIFICATION RULES
 

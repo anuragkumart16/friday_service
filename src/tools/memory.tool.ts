@@ -1,12 +1,16 @@
 import {tool} from "@langchain/core/tools"
 import {
   savePersonalMemories,
-  saveConversationMemory
+  saveConversationMemory,
+  deletePersonalMemory,
+  deleteConversationMemory
 } from "../services/memory.service"
 
 import {
   savePersonalMemoryToolDef,
-  saveConversationMemoryToolDef
+  saveConversationMemoryToolDef,
+  deletePersonalMemoryToolDef,
+  deleteConversationMemoryToolDef
 } from "./definitions/memoryTool.definitions"
 
 
@@ -18,4 +22,14 @@ export const savePersonalMemoryTool = tool(
 export const saveConversationMemoryTool = tool(
   saveConversationMemory,
   saveConversationMemoryToolDef
+)
+
+export const deletePersonalMemoryTool = tool(
+  deletePersonalMemory,
+  deletePersonalMemoryToolDef
+)
+
+export const deleteConversationMemoryTool = tool(
+  deleteConversationMemory,
+  deleteConversationMemoryToolDef
 )
