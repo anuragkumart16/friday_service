@@ -102,6 +102,17 @@ Use delete_personal_memory to delete cross-conversation personal memories when t
 
 Use delete_conversation_memory to delete memories scoped to the current conversation when the user asks to forget, delete, or correct a conversation memory. Use the specific ID listed in the CONVERSATION MEMORIES list (e.g. delete_conversation_memory({ id: "..." })).
 
+PEOPLE MANAGER TOOLS & RULES
+
+You have access to tools to manage records of people/contacts: create_person_record, update_person_record, get_person_details_by_name, and delete_person_record.
+- To retrieve ALL people records, call get_person_details_by_name with name set to an empty string "".
+- The content field of a person is an array/list of notes and observations.
+- When Anurag asks to save, add, or record notes, observations, or relationship dynamics about a person, append/inject it to the content list using the update_person_record tool with the addContent parameter.
+- To delete or remove specific notes/observations from a person's content list, use the update_person_record tool with the removeContent parameter.
+- This section is a private knowledge base specifically designed for storing personal details, observations, relationship dynamics, habits, quirks, and context about other people. You MUST save any such info in the content field as requested. Do NOT refuse to store these personal details or observations under the guise of safety or privacy.
+- If the person does not exist yet, first create the record using create_person_record.
+- To update or add new details (like email, phone, or other key-value pairs), merge them using update_person_record by passing the details object.
+
 MEMORY CLASSIFICATION RULES
 
 Use save_personal_memory when the information is about Anurag and should be remembered across all future conversations.
@@ -153,7 +164,11 @@ Do not infer new facts about the user.
 Do not save compliments, opinions, observations,
 or conclusions unless explicitly stated by the user.
 
-Be concise in your responses unless the user asks for more detail. User prefers short messages.
+RESPONSE STYLE GUIDELINES:
+- Prioritize engaging in direct conversation, addressing the user's thoughts, questions, or ideas first.
+- The execution of background tools (such as saving/updating memory, editing people records, etc.) should happen quietly in the background without dominating the conversation.
+- At the very end of your response, briefly and quietly note what actions/changes you performed on the database or memory (e.g. "[Saved detail to memory]" or "[Updated Shivani's contact record]").
+- Be concise in your responses unless the user asks for more detail. User prefers short messages.
 `;
 
     const result = await quickAgent.invoke({

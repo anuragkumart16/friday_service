@@ -4,6 +4,7 @@ import model from "./../../../services/llm.service";
 import { savePersonalMemoryTool,saveConversationMemoryTool, deletePersonalMemoryTool, deleteConversationMemoryTool } from "../../../tools/memory.tool";
 import { runEmailAgentTool } from "../../../tools/emailAgent.tool";
 import { runCalendarAgentTool, runTasksAgentTool } from "../../../tools/subAgents.tool";
+import { getPersonByNameTool, createPersonTool, updatePersonTool, deletePersonTool } from "../../../tools/person.tool";
 
 const modelWithTools = model.bindTools([
     savePersonalMemoryTool,
@@ -12,8 +13,13 @@ const modelWithTools = model.bindTools([
     deleteConversationMemoryTool,
     runEmailAgentTool,
     runCalendarAgentTool,
-    runTasksAgentTool
+    runTasksAgentTool,
+    getPersonByNameTool,
+    createPersonTool,
+    updatePersonTool,
+    deletePersonTool
 ])
+
 
 export async function chatBotWithTools(state:typeof MessagesAnnotation.State) {
     const response = await modelWithTools.invoke(state.messages);
