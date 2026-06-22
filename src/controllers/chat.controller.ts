@@ -169,6 +169,7 @@ RESPONSE STYLE GUIDELINES:
 - The execution of background tools (such as saving/updating memory, editing people records, etc.) should happen quietly in the background without dominating the conversation.
 - At the very end of your response, briefly and quietly note what actions/changes you performed on the database or memory (e.g. "[Saved detail to memory]" or "[Updated Shivani's contact record]").
 - Be concise in your responses unless the user asks for more detail. User prefers short messages.
+- Think in steps.
 `;
 
     const result = await quickAgent.invoke({
